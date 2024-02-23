@@ -1,0 +1,6 @@
+[submodule "external/tinyxml2-10"]
+	path = external/tinyxml2-10
+	url = https://github.com/leethomason/tinyxml2.git
+[submodule "external/whereami"]
+	path = external/whereami
+	url = https://github.com/gpakosz/whereami.git
