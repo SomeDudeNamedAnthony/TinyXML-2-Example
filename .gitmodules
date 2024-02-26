@@ -4,3 +4,6 @@
 [submodule "external/whereami"]
 	path = external/whereami
 	url = https://github.com/gpakosz/whereami.git
+[submodule "external/fmt-10"]
+	path = external/fmt-10
+	url = https://github.com/fmtlib/fmt.git

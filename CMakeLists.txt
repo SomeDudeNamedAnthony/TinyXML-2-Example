@@ -7,6 +7,7 @@ project(
   LANGUAGES C CXX)
 
 add_subdirectory("${CMAKE_CURRENT_LIST_DIR}/external/tinyxml2-10")
+add_subdirectory("${CMAKE_CURRENT_LIST_DIR}/external/fmt-10")
 
 add_library(
   whereami STATIC "${CMAKE_CURRENT_LIST_DIR}/external/whereami/src/whereami.c"
@@ -21,4 +22,6 @@ add_executable(${PROJECT_NAME} ${CMAKE_CURRENT_LIST_DIR}/src/main.cpp
                                ${CMAKE_CURRENT_LIST_DIR}/src/file.cpp)
 
 target_link_libraries(${PROJECT_NAME} PRIVATE tinyxml2::tinyxml2
-                                              whereami::whereami)
+                                              whereami::whereami fmt::fmt)
+
+                                    

@@ -2,7 +2,8 @@
 #include "./../external/whereami/src/whereami.h"
 #include <cstdio>
 #include <cstring>
-#include <sys/_types/_size_t.h>
+#include <string.h>
+#include <string>
 
 #ifdef __APPLE__
 #include <__nullptr>
@@ -10,37 +11,38 @@
 
 #include <stdio.h>
 
-const char *get_application_path(int *dir_len) {
+const std::string get_application_path(int *dir_len) {
     int _len = wai_getExecutablePath(nullptr, 0, nullptr);
     char *_path = new char[_len + 1];
     wai_getExecutablePath(_path, _len, dir_len);
     _path[_len] = '\0';
-    return _path;
+    return {_path};
 }
 
-const char *get_application_dir(const char *const path, int dir_len) {
-    char *_dir = new char[dir_len + 1];
-    for (int i = 0; i < dir_len; i++) {
-        _dir[i] = path[i];
-    }
-    _dir[dir_len] = '\0';
-    return _dir;
+const std::string get_application_dir(const std::string &path, int dir_len) {
+    return path.substr(0, dir_len);
 }
 
-bool can_open_file(const char *const path) {
-    FILE *_file = fopen(path, "r");
+bool can_open_file(const std::string &path) {
+#ifdef _WIN32
+    std::string _path = to_windows_path(path);
+    FILE *_file;
+    fopen_s(&_file, _path.c_str(), "r");
+#else
+    std::string _path = path;
+    FILE *_file = fopen(_path.c_str(), "r");
+#endif
+
     if (_file == nullptr) {
         return false;
     }
     return true;
 }
 
-const char *to_windows_path(const char *const path) {
-    char *_path = new char[sizeof(path)];
-    strcpy(_path, path);
+const std::string to_windows_path(const std::string &path) {
+    std::string _path = path;
 
-    size_t _len = strlen(_path);
-    for (size_t i = 0; i < _len; i++) {
+    for (size_t i = 0; i < _path.length(); i++) {
         if (_path[i] == '/') {
             _path[i] = '\\';
         }
